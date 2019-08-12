@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./jq.js"></script>
+</head>
+<style>
+    *{
+        padding: 0;margin: 0
+    }
+    img{
+        width: 20%;
+        height: 300px;
+    }
+</style>
+
+<body>
+    <button onclick="Contactsquerys()">查询</button>
+    <input type="text" id="txt">
+   <div id="img">
+       <img src="" alt="">
+   </div>
+</body>
+
+</html>
+<script>
+    function fn(data){
+        var data =data.data;
+        var img = ''
+            for(var j=0;j<data.length;j++){
+            img += "<img src=" + data[j].hoverURL + ">" 
+            }
+            $('#img').append(img)
+    };
+    var btn =document.getElementById("txt");
+    var num = 30
+    function Contactsquerys(nums) {
+        if(nums === undefined) {
+            num = 30
+        } else {
+            num += nums
+        }
+        var list_mval = btn.value;
+        var script = document.createElement("script");
+            script.src ="https://image.baidu.com/search/acjson?tn=resultjson_com&ipn=rj&ct=201326592&is=&fp="+list_mval+"&cl=2&lm=-1&ie=utf-8&oe=utf-8&adpicid=&st=&z=&ic=&hd=&latest=&copyright=&word="+list_mval+"&s=&se=&tab=&width=&height=&face=&istype=&qc=&nc=&fr=&expermode=&force=&cg=head&pn="+ num +"&rn=30&gsm=5a&1565227227532=&callback=fn"
+            document.body.appendChild(script);
+            script.onload = function(){
+                this.remove();
+            }
+    }
+    window.onscroll = function() {
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+         var h = document.body.offsetHeight - scrollTop
+         if (h < 1500) {
+             var n = 30
+            Contactsquerys(n)
+         }
+    }
+    function Person(name, age, sex) {
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+    }
+    Person.prototype.sleep = function () { console.log(1) }
+    Person.prototype.play = function () { }
+    Person.prototype.eat = function () { }
+    function Man(beard, larynx, name, age, sex) {
+        Person.apply(this, [name, age, sex])
+        this.beard = beard;
+        this.larynx = larynx;
+    }
+    /*
+        污染父级
+    */
+    Man.prototype = Person.prototype
+    Man.prototype.work = function () { }
+    //实例化
+    var chenliang = new Man(10, "很大", "陈亮", "40", "男");
+    // chenliang.__proto__.sleep()
+    // console.log(chenliang)
+    // console.log([Person])
+   // console.log(Person.prototype, Object.prototype, Object.getPrototypeOf(Object.prototype), Man.prototype.isPrototypeOf(chenliang))
+    //  function init(){
+    // 	this.banner()
+    // }
+    // init.prototype={
+    //     constructor:init,
+    //     banner:function(){
+    //         console.log(1,this,arguments)
+    //     }
+    // }
+    // new init()
+    // function jq(){
+    //     this.init()
+    // }
+    // $.extend(jq.prototype,{
+    //     init:function(){
+    //         console.log(2,this)
+    //     }
+    // })
+    // new jq()
+   var a = function(i){
+        console.log(i)
+
+    }(1)
+    function Person(){
+        var arr = []
+        for (var i = 0; i<10; i++){
+            arr[i] = function(num){
+                //console.log(num)
+                return function(){
+                    return num
+                }
+            }(i)
+        }
+        return arr
+    }
+    var b = Person()
+   console.log(Person()[2]())
+</script>
